@@ -26,3 +26,21 @@ function operate(op, num1, num2) {
       return divide(num1, num2);
   }
 }
+
+const display = document.querySelector('.display');
+
+/* Add eventListeners to all numbers */
+const buttons = Array.from(document.querySelectorAll('.number'));
+buttons.forEach(button => button.addEventListener('click', processNumber));
+
+function processNumber() {
+  if (display.textContent == 0) {
+    display.textContent = this.textContent;
+  } else if (display.textContent.length < 10) {
+    display.textContent += this.textContent;
+  }
+}
+
+/* Add eventListener to clear the display */
+const clear = document.querySelector('.clear');
+clear.addEventListener('click', () => display.textContent = 0);
