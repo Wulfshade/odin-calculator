@@ -1,5 +1,5 @@
 function add(num1, num2) {
-  return parseInt(num1) + parseInt(num2);
+  return num1 + num2;
 }
 
 function subtract(num1, num2) {
@@ -15,6 +15,8 @@ function divide(num1, num2) {
 }
 
 function operate(op, num1, num2) {
+  num1 = parseFloat(num1);
+  num2 = parseFloat(num2);
   switch(op) {
     case '+':
       return add(num1, num2);
@@ -27,18 +29,27 @@ function operate(op, num1, num2) {
   }
 }
 
-function processNumber() {
+function processNumber(num) {
+  console.log(typeof num);
+  let digit;
+  if(typeof num === 'string') {
+    digit = num;
+  } else {
+    digit = num.target.textContent;
+  }
+
   if (display.textContent == 0 || toClear) {
-    display.textContent = this.textContent;
+    display.textContent = digit;
   } else if (display.textContent.length < 10) {
-    display.textContent += this.textContent;
+    display.textContent += digit;
   }
   toClear = false;
+  console.log(toClear);
 }
 
 function processDot() {
-  if(!display.textContent.includes(",")) {
-    display.textContent += this.textContent;
+  if(!display.textContent.includes(".")) {
+    display.textContent += '.';
   }
 }
 
@@ -50,9 +61,14 @@ function processPercent() {
   display.textContent = display.textContent / 100;
 }
 
-function processOperator() {
+function processOperator(operator) {
+  if(typeof operator === 'string') {
+    op = operator;
+  } else {
+    op = operator.target.textContent;
+  }
+
   num1 = display.textContent;
-  op = this.textContent;
   toClear = true;
 }
  
@@ -114,3 +130,23 @@ function darken() {
 function lighten() {
   this.style.filter = "brightness(1)";
 }
+
+document.addEventListener('keypress', (event) => {
+  var key = event.key;
+
+  if ( ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(key) ) {
+    processNumber(key);
+  } else if ( ['+', '-', 'x', '/'].includes(key) ) {
+    processOperator(key);
+  } else if (key === 'Enter') {
+    processEquals();
+  } else if ( key === '.' ) {
+    processDot();
+  } else if ( key === 'i' ) {
+    processInvert()
+  } else if ( key === '%' ) {
+    processPercent()
+  } else if ( key === 'c') {
+    display.textContent = 0;
+  }
+});
