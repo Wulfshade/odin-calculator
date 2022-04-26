@@ -23,19 +23,19 @@ function operate(op, num1, num2) {
     case '-':
       return subtract(num1, num2);
     case 'x':
+    case '*':
       return multiply(num1, num2);
     case '/':
       return divide(num1, num2);
   }
 }
 
-function processNumber(num) {
-  console.log(typeof num);
+function processNumber(e) {
   let digit;
-  if(typeof num === 'string') {
-    digit = num;
+  if(typeof e === 'string') {
+    digit = e;
   } else {
-    digit = num.target.textContent;
+    digit = e.target.textContent;
   }
 
   if (display.textContent == 0 || toClear) {
@@ -83,6 +83,45 @@ function processEquals() {
   }
 }
 
+function processBacksapce() {
+  if (display.textContent.length > 1) {
+    display.textContent = display.textContent.slice(0, -1);
+  } else {
+    display.textContent = 0;
+  }
+}
+
+function processKey(e) {
+  var key = e.key;
+
+  if ( ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(key) ) {
+    processNumber(key);
+  } else if ( ['+', '-', 'x', '/', '*'].includes(key) ) {
+    processOperator(key);
+  } else if (key === 'Enter' || key === '=') {
+    processEquals();
+  } else if ( key === '.' ) {
+    processDot();c
+  } else if ( key === 'i' ) {
+    processInvert();
+  } else if ( key === '%' ) {
+    processPercent();
+  } else if ( key === 'c') {
+    display.textContent = 0;
+  } else if (key === 'Backspace') {
+    processBacksapce();
+  }
+
+}
+
+function darken() {
+  this.style.filter = "brightness(0.85)";
+}
+
+function lighten() {
+  this.style.filter = "brightness(1)";
+}
+
 let num1 = "";
 let num2 = "";
 let op = "";
@@ -118,35 +157,13 @@ operators.forEach(operator => operator.addEventListener('click', processOperator
 const equals = document.querySelector('.equals');
 equals.addEventListener('click', processEquals);
 
+/* Add eventListener for the backspace */
+const backspace = document.querySelector('.backspace');
+backspace.addEventListener('click', processBacksapce);
+
 /* Add eventListeners to all buttons */
 const buttons = Array.from(document.querySelectorAll('.buttons > div'));
 buttons.forEach(button => button.addEventListener('mousedown', darken ));
 buttons.forEach(button => button.addEventListener('mouseup', lighten ));
 
-function darken() {
-  this.style.filter = "brightness(0.85)";
-}
-
-function lighten() {
-  this.style.filter = "brightness(1)";
-}
-
-document.addEventListener('keypress', (event) => {
-  var key = event.key;
-
-  if ( ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].includes(key) ) {
-    processNumber(key);
-  } else if ( ['+', '-', 'x', '/'].includes(key) ) {
-    processOperator(key);
-  } else if (key === 'Enter') {
-    processEquals();
-  } else if ( key === '.' ) {
-    processDot();
-  } else if ( key === 'i' ) {
-    processInvert()
-  } else if ( key === '%' ) {
-    processPercent()
-  } else if ( key === 'c') {
-    display.textContent = 0;
-  }
-});
+document.addEventListener('keydown', processKey);

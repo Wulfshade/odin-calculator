@@ -40,12 +40,12 @@ body {
   align-items: center;
   color: whitesmoke;
   font-size: 32px;
-  width: 100px;
-  height: 100px;
+  width: 98px;
+  height: 98px;
+  border: 1px solid black;
 }
 
-.grey.double {
-  width: 200px;
+.backspace {
   border-bottom-left-radius: 15px;
 }
 
