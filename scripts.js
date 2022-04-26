@@ -108,7 +108,7 @@ function processKey(e) {
     processPercent();
   } else if ( key === 'c') {
     display.textContent = 0;
-  } else if (key === 'Backspace') {
+  } else if (key === 'Backspace' || key === '<') {
     processBacksapce();
   }
 
